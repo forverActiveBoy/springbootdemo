@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 //声明为配置类，加载到SpringBoot工厂中
 @Configuration
+
 //指定拦截路径，四种匹配方式
 @WebFilter(urlPatterns = {"*.jsp"})
 public class LoginFilter implements Filter {
