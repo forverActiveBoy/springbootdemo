@@ -1,0 +1,4 @@
+#配置文件的切分
+spring:
+  profiles:
+    active: dev

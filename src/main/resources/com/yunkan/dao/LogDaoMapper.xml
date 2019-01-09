@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunkan.dao.LogDao">
+    <!-- Log的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_Log_Map" type="com.yunkan.entity.Log">
+        <id column="id" property="id" />
+        <result column="operator" property="operator" />
+        <result column="time" property="time" />
+        <result column="do_what" property="doWhat" />
+    </resultMap>
+
+    <!-- 数据库中表名为:t_log的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="t_log_Column">
+        t_log.id as id
+        ,t_log.operator as operator
+        ,t_log.time as time
+        ,t_log.do_what as do_what
+    </sql>
+
+    <!--获得类名为:Log对应的数据库表的数据总行数 -->
+    <select id="getLogRowCount" resultType="java.lang.Long">
+        select count(id) from t_log
+    </select>
+    <select id="selectByPage" resultMap="result_Log_Map">
+        select * from t_log limit #{start},#{rows}
+    </select>
+
+    <insert id="insertLog" parameterType="com.yunkan.entity.Log">
+        insert into t_log(id,operator,time,do_what)
+        values(#{id},#{operator},#{time},#{doWhat})
+    </insert>
+</mapper>

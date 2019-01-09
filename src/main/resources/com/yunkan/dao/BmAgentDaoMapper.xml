@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunkan.dao.BmAgentDao">
+    <!-- BmAgent的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_BmAgent_Map" type="com.yunkan.entity.BmAgent">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="agent_name" property="agentName" />
+        <result column="contacts_name" property="contactsName" />
+        <result column="contacts_phone" property="contactsPhone" />
+        <result column="logo_pic" property="logoPic" />
+        <result column="cover_pic" property="coverPic" />
+        <result column="province_id" property="provinceId" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_id" property="cityId" />
+        <result column="city_name" property="cityName" />
+        <result column="admin_id" property="adminId" />
+        <result column="address" property="address" />
+        <result column="about" property="about" />
+        <result column="status" property="status" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="enable_" property="enable" />
+        <result column="last_update_by" property="lastUpdateBy" />
+        <result column="last_update_time" property="lastUpdateTime" />
+    </resultMap>
+
+    <!-- 数据库中表名为:bm_agent的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="bm_agent_Column">
+        bm_agent.id as id
+        ,bm_agent.code as code
+        ,bm_agent.agent_name as agent_name
+        ,bm_agent.contacts_name as contacts_name
+        ,bm_agent.contacts_phone as contacts_phone
+        ,bm_agent.logo_pic as logo_pic
+        ,bm_agent.cover_pic as cover_pic
+        ,bm_agent.province_id as province_id
+        ,bm_agent.province_name as province_name
+        ,bm_agent.city_id as city_id
+        ,bm_agent.city_name as city_name
+        ,bm_agent.admin_id as admin_id
+        ,bm_agent.address as address
+        ,bm_agent.about as about
+        ,bm_agent.status as status
+        ,bm_agent.create_by as create_by
+        ,bm_agent.create_time as create_time
+        ,bm_agent.enable_ as enable_
+        ,bm_agent.last_update_by as last_update_by
+        ,bm_agent.last_update_time as last_update_time
+    </sql>
+
+    <!--获得类名为:BmAgent对应的数据库表的数据总行数 -->
+    <select id="getBmAgentRowCount" resultType="java.lang.Long">
+        select count(id) from bm_agent
+    </select>
+    <!-- 获得类名为:BmAgent对应数据库中表的数据集合 -->
+    <select id="selectBmAgent" resultMap="result_BmAgent_Map">
+        select 
+        <include refid="bm_agent_Column" /> 
+        from bm_agent
+    </select> 
+
+    <!-- 获得一个BmAgent对象,以参数BmAgent对象中不为空的属性作为条件进行查询-->
+    <select id="selectBmAgentByObj" parameterType="com.yunkan.entity.BmAgent" resultMap="result_BmAgent_Map">
+        select 
+            <include refid="bm_agent_Column" /> 
+        from bm_agent
+        <where>
+            <if test="lastUpdateTime != null "> and bm_agent.last_update_time = #{lastUpdateTime}</if>
+            <if test="lastUpdateBy != null "> and bm_agent.last_update_by = #{lastUpdateBy}</if>
+            <if test="enable != null "> and bm_agent.enable_ = #{enable}</if>
+            <if test="createTime != null "> and bm_agent.create_time = #{createTime}</if>
+            <if test="createBy != null "> and bm_agent.create_by = #{createBy}</if>
+            <if test="status != null "> and bm_agent.status = #{status}</if>
+            <if test="about != null "> and bm_agent.about = #{about}</if>
+            <if test="address != null "> and bm_agent.address = #{address}</if>
+            <if test="adminId != null "> and bm_agent.admin_id = #{adminId}</if>
+            <if test="cityName != null "> and bm_agent.city_name = #{cityName}</if>
+            <if test="cityId != null "> and bm_agent.city_id = #{cityId}</if>
+            <if test="provinceName != null "> and bm_agent.province_name = #{provinceName}</if>
+            <if test="provinceId != null "> and bm_agent.province_id = #{provinceId}</if>
+            <if test="coverPic != null "> and bm_agent.cover_pic = #{coverPic}</if>
+            <if test="logoPic != null "> and bm_agent.logo_pic = #{logoPic}</if>
+            <if test="contactsPhone != null "> and bm_agent.contacts_phone = #{contactsPhone}</if>
+            <if test="contactsName != null "> and bm_agent.contacts_name = #{contactsName}</if>
+            <if test="agentName != null "> and bm_agent.agent_name = #{agentName}</if>
+            <if test="code != null "> and bm_agent.code = #{code}</if>
+            <if test="id != null "> and bm_agent.id = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过BmAgent的id获得对应数据库中表的数据对象-->
+    <select id="selectBmAgentById" parameterType="java.lang.Long" resultMap="result_BmAgent_Map">
+        select 
+            <include refid="bm_agent_Column" /> 
+        from bm_agent
+        where bm_agent.id = #{id}
+    </select> 
+
+    <!-- 将BmAgent插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertBmAgent" parameterType="com.yunkan.entity.BmAgent">
+        insert into bm_agent(id,code,agent_name,contacts_name,contacts_phone,logo_pic,cover_pic,province_id,province_name,city_id,city_name,admin_id,address,about,status,create_by,create_time,enable_,last_update_by,last_update_time) 
+        values(#{id},#{code},#{agentName},#{contactsName},#{contactsPhone},#{logoPic},#{coverPic},#{provinceId},#{provinceName},#{cityId},#{cityName},#{adminId},#{address},#{about},#{status},#{createBy},#{createTime},#{enable},#{lastUpdateBy},#{lastUpdateTime})
+    </insert>
+
+    <!-- 将BmAgent中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyBmAgent" parameterType="com.yunkan.entity.BmAgent">
+        insert into bm_agent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="agentName != null">agent_name,</if>
+            <if test="contactsName != null">contacts_name,</if>
+            <if test="contactsPhone != null">contacts_phone,</if>
+            <if test="logoPic != null">logo_pic,</if>
+            <if test="coverPic != null">cover_pic,</if>
+            <if test="provinceId != null">province_id,</if>
+            <if test="provinceName != null">province_name,</if>
+            <if test="cityId != null">city_id,</if>
+            <if test="cityName != null">city_name,</if>
+            <if test="adminId != null">admin_id,</if>
+            <if test="address != null">address,</if>
+            <if test="about != null">about,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="enable != null">enable_,</if>
+            <if test="lastUpdateBy != null">last_update_by,</if>
+            <if test="lastUpdateTime != null">last_update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="code != null"> #{code},</if>
+            <if test="agentName != null"> #{agentName},</if>
+            <if test="contactsName != null"> #{contactsName},</if>
+            <if test="contactsPhone != null"> #{contactsPhone},</if>
+            <if test="logoPic != null"> #{logoPic},</if>
+            <if test="coverPic != null"> #{coverPic},</if>
+            <if test="provinceId != null"> #{provinceId},</if>
+            <if test="provinceName != null"> #{provinceName},</if>
+            <if test="cityId != null"> #{cityId},</if>
+            <if test="cityName != null"> #{cityName},</if>
+            <if test="adminId != null"> #{adminId},</if>
+            <if test="address != null"> #{address},</if>
+            <if test="about != null"> #{about},</if>
+            <if test="status != null"> #{status},</if>
+            <if test="createBy != null"> #{createBy},</if>
+            <if test="createTime != null"> #{createTime},</if>
+            <if test="enable != null"> #{enable},</if>
+            <if test="lastUpdateBy != null"> #{lastUpdateBy},</if>
+            <if test="lastUpdateTime != null"> #{lastUpdateTime},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过BmAgent的id将数据库表中对应的数据删除-->
+    <delete id="deleteBmAgentById" parameterType="java.lang.Long">
+        delete from bm_agent
+        where id = #{id}
+    </delete>
+
+    <!-- 通过BmAgent的id将BmAgent的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateBmAgentById" parameterType="com.yunkan.entity.BmAgent">
+        update bm_agent set
+            code=#{code}
+            ,agent_name=#{agentName}
+            ,contacts_name=#{contactsName}
+            ,contacts_phone=#{contactsPhone}
+            ,logo_pic=#{logoPic}
+            ,cover_pic=#{coverPic}
+            ,province_id=#{provinceId}
+            ,province_name=#{provinceName}
+            ,city_id=#{cityId}
+            ,city_name=#{cityName}
+            ,admin_id=#{adminId}
+            ,address=#{address}
+            ,about=#{about}
+            ,status=#{status}
+            ,create_by=#{createBy}
+            ,create_time=#{createTime}
+            ,enable_=#{enable}
+            ,last_update_by=#{lastUpdateBy}
+            ,last_update_time=#{lastUpdateTime}
+        where id=#{id}
+    </update>
+
+    <!-- 通过BmAgent的id将BmAgent中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyBmAgentById" parameterType="com.yunkan.entity.BmAgent">
+        update bm_agent
+        <set>
+            <if test="code != null">
+                code=#{code},
+            </if>
+            <if test="agentName != null">
+                agent_name=#{agentName},
+            </if>
+            <if test="contactsName != null">
+                contacts_name=#{contactsName},
+            </if>
+            <if test="contactsPhone != null">
+                contacts_phone=#{contactsPhone},
+            </if>
+            <if test="logoPic != null">
+                logo_pic=#{logoPic},
+            </if>
+            <if test="coverPic != null">
+                cover_pic=#{coverPic},
+            </if>
+            <if test="provinceId != null">
+                province_id=#{provinceId},
+            </if>
+            <if test="provinceName != null">
+                province_name=#{provinceName},
+            </if>
+            <if test="cityId != null">
+                city_id=#{cityId},
+            </if>
+            <if test="cityName != null">
+                city_name=#{cityName},
+            </if>
+            <if test="adminId != null">
+                admin_id=#{adminId},
+            </if>
+            <if test="address != null">
+                address=#{address},
+            </if>
+            <if test="about != null">
+                about=#{about},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="createBy != null">
+                create_by=#{createBy},
+            </if>
+            <if test="createTime != null">
+                create_time=#{createTime},
+            </if>
+            <if test="enable != null">
+                enable_=#{enable},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by=#{lastUpdateBy},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time=#{lastUpdateTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <select id="getAllByPage" resultMap="result_BmAgent_Map">
+        select * from bm_agent limit #{start},#{rows}
+    </select>
+    <delete id="deleteMany" >
+        delete from bm_agent where id in
+        <foreach collection="array" open="(" close=")" separator="," item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+</mapper>

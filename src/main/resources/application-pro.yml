@@ -1,0 +1,23 @@
+#服务器的配置，端口，项目名，字符编码集
+server:
+  servlet:
+    context-path: /
+  port: 8081
+  tomcat:
+    uri-encoding: utf-8
+#Spring与MyBatis整合的数据库连接信息
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: aaa
+    username: aaa
+    password: aaa
+#试图解析器
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+#告诉MyBatisMapper文件的位置
+mybatis:
+  mapper-locations: classpath:com/yunkan/dao/*DaoMapper.xml
